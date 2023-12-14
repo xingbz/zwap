@@ -73,3 +73,5 @@ fabric.properties
 modules.xml
 vcs.xml
 *.iml
+
+git_toolbox_prj.xml
