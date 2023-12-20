@@ -7,5 +7,6 @@ module.exports = {
             ComponentsPlugin({resolvers: [VantResolver()]})
         ],
     },
+    publicPath: '/zwap/'
 }
 ;
