@@ -5,33 +5,17 @@ const routes = [
     name: 'notFound',
     path: '/:path(.*)+',
     redirect: {
-      name: 'goods',
+      name: 'dy',
     },
   },
   {
-    name: 'user',
-    path: '/user',
-    component: () => import('./view/user'),
+    name: 'dy',
+    path: '/dy',
+    component: () => import('./view/dy'),
     meta: {
-      title: '会员中心',
+      title: 'dy',
     },
-  },
-  {
-    name: 'cart',
-    path: '/cart',
-    component: () => import('./view/cart'),
-    meta: {
-      title: '购物车',
-    },
-  },
-  {
-    name: 'goods',
-    path: '/goods',
-    component: () => import('./view/goods'),
-    meta: {
-      title: '商品详情',
-    },
-  },
+  }
 ];
 
 const router = createRouter({
