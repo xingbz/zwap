@@ -7,6 +7,6 @@ module.exports = {
             ComponentsPlugin({resolvers: [VantResolver()]})
         ],
     },
-    publicPath: '/zwap/'
+    publicPath: process.env.NODE_ENV === 'production' ? '/zwap/' : '/'
 }
 ;
