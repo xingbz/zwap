@@ -23,6 +23,14 @@ const routes = [
         meta: {
             title: '计算器',
         },
+    },
+    {
+        name: 'caidan',
+        path: '/caidan',
+        component: () => import('./view/caidan'),
+        meta: {
+            title: '菜单',
+        },
     }
 ];
 
