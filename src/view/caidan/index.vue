@@ -6,7 +6,7 @@
     <van-loading v-if="loading" class="content-middle" size="62" text-size="26" vertical>菜单加载中...</van-loading>
     <van-swipe v-if="!loading" :initial-swipe="todayIndex" :loop="false">
       <van-swipe-item v-for="(url, index) in imgUrlList" :key="index">
-        <van-image
+        <van-image @dragstart.prevent
             radius="20"
             :src="url"
         />

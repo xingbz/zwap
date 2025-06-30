@@ -8,6 +8,7 @@ import {Overlay} from 'vant'; //遮罩组件
 
 import 'vant/es/toast/style';
 import 'vant/es/dialog/style';
+import '@vant/touch-emulator'
 
 const app = createApp(App);
 app.use(router);
