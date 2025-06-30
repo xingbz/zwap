@@ -100,3 +100,6 @@ pnpm-debug.log*
 *.sw?
 
 package-lock.json
+.yarn
+.yarnrc.yml
+yarn.lock
