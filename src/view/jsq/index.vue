@@ -36,7 +36,12 @@
 <!--      </van-col>-->
       <van-col span="24">
         <van-list>
-          <van-cell v-for="item in history" :title="item.expression" @click="copyResult(item.expression)"/>
+          <van-cell v-for="(item, index) in history" :title="item.expression">
+            <template #right-icon>
+              <van-button plain hairline type="primary" size="mini" @click="copyResult(item.expression)">复制</van-button>
+              <van-button plain hairline type="danger" size="mini" @click="removeHistoryItem(index)" style="margin-left: 8px;">清除</van-button>
+            </template>
+          </van-cell>
         </van-list>
       </van-col>
     </van-row>
@@ -73,6 +78,10 @@ function compute(save) {
 
 function clearHistory() {
   history.value = []
+}
+
+function removeHistoryItem(index) {
+  history.value.splice(index, 1);
 }
 
 </script>
