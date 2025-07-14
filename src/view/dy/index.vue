@@ -1,6 +1,7 @@
 <template>
-  <!-- 顶部安全区 -->
-  <div class="van-safe-area-top">
+  <div>
+    <!-- 顶部安全区 -->
+    <div class="van-safe-area-top"/>
     <van-nav-bar title="视频去水印解析在线工具"/>
     <van-row gutter="[20, 20]" justify="space-around">
       <van-col span="24">

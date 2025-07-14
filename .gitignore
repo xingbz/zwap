@@ -78,7 +78,6 @@ git_toolbox_prj.xml
 
 .DS_Store
 node_modules
-/dist
 
 
 # local env files
@@ -101,3 +100,6 @@ pnpm-debug.log*
 *.sw?
 
 package-lock.json
+.yarnrc.yml
+yarn.lock
+.yarn/install-state.gz
