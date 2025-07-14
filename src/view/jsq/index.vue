@@ -16,7 +16,12 @@
         <van-field v-model="formula" placeholder="在此处输入计算的公式" clearable @update:model-value="compute(false)"
           @keyup.enter="compute(true)" />
       </van-col>
-      <van-col span="4">结果</van-col>
+      <van-col span="1">结果</van-col>
+      <van-col span="3">
+        <van-button plain hairline type="warning" size="mini" class="content-middle" @click="formula = result">
+          回填
+        </van-button>
+      </van-col>
       <van-col span="20">
         <van-button plain hairline type="primary" size="mini" class="content-middle" @click="copyResult(result)">
           复制
@@ -42,7 +47,9 @@
         <van-list>
           <van-cell v-for="(item, index) in history" :title="item.expression">
             <template #right-icon>
-              <van-button plain hairline type="primary" size="mini" @click="copyResult(item.expression)">复制</van-button>
+              <van-button plain hairline type="warning" size="mini" @click="formula = item.result">回填</van-button>
+              <van-button plain hairline type="primary" size="mini" @click="copyResult(item.expression)"
+                style="margin-left: 8px;">复制</van-button>
               <van-button plain hairline type="danger" size="mini" @click="removeHistoryItem(index)"
                 style="margin-left: 8px;">清除</van-button>
             </template>
