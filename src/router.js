@@ -1,4 +1,4 @@
-import {createRouter, createWebHashHistory} from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 
 const routes = [
     {
@@ -31,6 +31,14 @@ const routes = [
         meta: {
             title: '菜单',
         },
+    },
+    {
+        name: 'weather',
+        path: '/weather',
+        component: () => import('./view/weather'),
+        meta: {
+            title: '天气',
+        },
     }
 ];
 
@@ -47,4 +55,4 @@ router.beforeEach((to, from, next) => {
     next();
 });
 
-export {router};
+export { router };
