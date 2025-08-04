@@ -49,36 +49,38 @@
 
     <van-loading v-if="loading" class="content-middle" size="62" text-size="26" vertical>查询中...</van-loading>
     <!-- 表格内容区域 -->
-    <van-grid v-if="!loading" :column-num="selectedCityIdList.length + 1" v-for="dateItems in getWeatherDataByDate">
-      <!-- 第一列, 取二维数组的第一个元素的日期(每个元素日期一样) -->
-      <van-grid-item>{{ dateItems[0].fxDate }}</van-grid-item>
+    <div class="weather-content-scroll" v-if="!loading">
+      <van-grid :column-num="selectedCityIdList.length + 1" v-for="dateItems in getWeatherDataByDate">
+        <!-- 第一列, 取二维数组的第一个元素的日期(每个元素日期一样) -->
+        <van-grid-item>{{ dateItems[0].fxDate }}</van-grid-item>
 
-      <!-- 第2-N列, 每个城市的天气数据 -->
-      <van-grid-item v-for="cityItem in dateItems">
-        <div v-if="cityItem">
-          <van-row justify="center" align="center">
-            <van-col span="24" class="col-border">
-              <!-- 预报白天天气状况的图标代码 -->
-              <i :class="`qi-${cityItem.iconDay}`" class="qi-font-size" />&nbsp;
-              <!-- 预报白天天气状况文字描述，包括阴晴雨雪等天气状态的描述 -->
-              {{ cityItem.textDay }}
-              {{ cityItem.textNight && cityItem.textNight !== cityItem.textDay ? '转&nbsp;' + cityItem.textNight : ''
-              }}&nbsp;
-            </van-col>
-            <!-- <van-col span="2">
-              <van-icon name="info-o" />
-            </van-col> -->
-            <van-col span="24" class="col-border">
-              <!-- 预报当天最低温度 ~ 预报当天最高温度 -->
-              气温: {{ cityItem.tempMin }}°C~{{ cityItem.tempMax }}°C
-            </van-col>
-          </van-row>
-        </div>
-        <div v-else>
-          -
-        </div>
-      </van-grid-item>
-    </van-grid>
+        <!-- 第2-N列, 每个城市的天气数据 -->
+        <van-grid-item v-for="cityItem in dateItems">
+          <div v-if="cityItem">
+            <van-row justify="center" align="center">
+              <van-col span="24" class="col-border">
+                <!-- 预报白天天气状况的图标代码 -->
+                <i :class="`qi-${cityItem.iconDay}`" class="qi-font-size" />&nbsp;
+                <!-- 预报白天天气状况文字描述，包括阴晴雨雪等天气状态的描述 -->
+                {{ cityItem.textDay }}
+                {{ cityItem.textNight && cityItem.textNight !== cityItem.textDay ? '转&nbsp;' + cityItem.textNight : ''
+                }}&nbsp;
+              </van-col>
+              <!-- <van-col span="2">
+                <van-icon name="info-o" />
+              </van-col> -->
+              <van-col span="24" class="col-border">
+                <!-- 预报当天最低温度 ~ 预报当天最高温度 -->
+                气温: {{ cityItem.tempMin }}°C~{{ cityItem.tempMax }}°C
+              </van-col>
+            </van-row>
+          </div>
+          <div v-else>
+            -
+          </div>
+        </van-grid-item>
+      </van-grid>
+    </div>
   </div>
 
   <van-popup v-model:show="showCityPopupFlag" position="left"
@@ -104,6 +106,14 @@
 import { ref, onMounted, computed } from 'vue';
 import { showFailToast } from "vant"
 import axios from "axios";
+
+const WEATHER_URL = 'https://pb3fbxwcuk.re.qweatherapi.com/'
+const weatherApi = axios.create({
+  baseURL: 'https://oms-api.adsdesk.cn/openapi/tq/call',
+  headers: {
+    'authCode': '7oVHfjE7XQJh+G+ML2u7Uqx6sunH'
+  }
+});
 
 const showCityPopupFlag = ref(false); // 是否展示城市弹窗
 const param = ref('') // 城市搜索参数
@@ -156,8 +166,8 @@ function onQueryCity() {
     return showFailToast('请输入城市')
   }
 
-  axios.get('/weather-api/geo/v2/city/lookup?location=' + param.value + '&number=20&lang=zh').then(res => {
-    const data = res.data
+  weatherApi.get('?path=' + WEATHER_URL + 'geo/v2/city/lookup?location=' + param.value + '&number=20&lang=zh').then(res => {
+    const data = res.data.data
     if (data.code === -1) {
       return showFailToast(data.msg)
     }
@@ -193,8 +203,8 @@ function onQueryWeather() {
   loading.value = true
 
   selectedCityIdList.value.forEach(selectedCityId => {
-    axios.get('/weather-api/v7/weather/30d?location=' + selectedCityId).then(res => {
-      const data = res.data
+    weatherApi.get('?path=' + WEATHER_URL + 'v7/weather/30d?location=' + selectedCityId).then(res => {
+      const data = res.data.data
       if (data.code === -1) {
         return showFailToast(data.msg)
       }
@@ -281,8 +291,8 @@ onMounted(() => initData())
   border-bottom: 1px solid #eee;
 }
 
-.col-border {
-  /* border: 1px solid #eee */
+.weather-content-scroll {
+  padding-bottom: 50px; /* 设置底部内边距，避免内容被全局导航栏挡住 */
 }
 
 .qi-font-size {
