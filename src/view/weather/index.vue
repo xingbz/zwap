@@ -13,8 +13,13 @@
           <van-button plain type="primary" size="small" @click="onQueryWeather">查询</van-button>
         </template>
       </van-cell>
+      <van-cell>
+        <!-- <van-dropdown-menu>
+          <van-dropdown-item v-model="highlightKeywords" :options="CONST.highlightOptions" />
+          <van-dropdown-item v-model="overlookKeywords" :options="CONST.overlookOptions" />
+        </van-dropdown-menu> -->
+      </van-cell>
     </div>
-    <van-divider />
 
     <!-- 表格头部 -->
     <van-sticky>
@@ -62,9 +67,9 @@
                 <!-- 预报白天天气状况的图标代码 -->
                 <i :class="`qi-${cityItem.iconDay}`" class="qi-font-size" />&nbsp;
                 <!-- 预报白天天气状况文字描述，包括阴晴雨雪等天气状态的描述 -->
-                {{ cityItem.textDay }}
-                {{ cityItem.textNight && cityItem.textNight !== cityItem.textDay ? '转&nbsp;' + cityItem.textNight : ''
-                }}&nbsp;
+                <van-highlight :keywords="highlightKeywords" highlight-class="highlight-class"
+                  :source-string="cityItem.textDay + (cityItem.textNight && cityItem.textNight !== cityItem.textDay ? '转&nbsp;' + cityItem.textNight : '')" />
+                &nbsp;
               </van-col>
               <!-- <van-col span="2">
                 <van-icon name="info-o" />
@@ -94,7 +99,7 @@
     <van-cell-group>
       <van-checkbox-group v-model="selectedCityIdList" shape="square" @change="onChangeSelectedCity">
         <van-space direction="vertical" fill>
-          <van-checkbox v-for="item in queryCityList" :name="item.id">{{ item.name }}</van-checkbox>
+          <van-checkbox v-for="item in queryCityList" :name="item.id">{{ item.name + '(' + item.adm1 + "-" +  item.adm2 + ')' }}</van-checkbox>
         </van-space>
       </van-checkbox-group>
     </van-cell-group>
@@ -105,15 +110,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { showFailToast } from "vant"
-import axios from "axios";
-
-const WEATHER_URL = 'https://pb3fbxwcuk.re.qweatherapi.com/'
-const weatherApi = axios.create({
-  baseURL: 'https://oms-api.adsdesk.cn/openapi/tq/call',
-  headers: {
-    'authCode': '7oVHfjE7XQJh+G+ML2u7Uqx6sunH'
-  }
-});
+import { CONST, INIT_DATA, API } from "@/util/constant/weather_constants";
 
 const showCityPopupFlag = ref(false); // 是否展示城市弹窗
 const param = ref('') // 城市搜索参数
@@ -122,6 +119,9 @@ const selectedCityIdList = ref([]); // 选中城市ID列表
 const selectedCityMap = ref({}); // 选中城市ID和对象的映射关系
 const loading = ref(false); // 城市天气数据加载状态
 const weatherMap = ref({}); // 城市天气数据映射关系, key: 城市ID, value: 城市天气数据列表
+
+const highlightKeywords = ref(['雨', '雪', '雷', '雹'])
+const overlookKeywords = ref('')
 
 /**
  * 计算属性，按日期组织天气数据
@@ -166,7 +166,7 @@ function onQueryCity() {
     return showFailToast('请输入城市')
   }
 
-  weatherApi.get('?path=' + WEATHER_URL + 'geo/v2/city/lookup?location=' + param.value + '&number=20&lang=zh').then(res => {
+  API.get('?path=' + CONST.WEATHER_URL + 'geo/v2/city/lookup?location=' + param.value + '&number=20&lang=zh').then(res => {
     const data = res.data.data
     if (data.code === -1) {
       return showFailToast(data.msg)
@@ -203,7 +203,7 @@ function onQueryWeather() {
   loading.value = true
 
   selectedCityIdList.value.forEach(selectedCityId => {
-    weatherApi.get('?path=' + WEATHER_URL + 'v7/weather/30d?location=' + selectedCityId).then(res => {
+    API.get('?path=' + CONST.WEATHER_URL + 'v7/weather/30d?location=' + selectedCityId).then(res => {
       const data = res.data.data
       if (data.code === -1) {
         return showFailToast(data.msg)
@@ -236,28 +236,9 @@ function removeCity(cityId) {
 }
 
 function initData() {
-  selectedCityIdList.value = ["101010700"]
-  selectedCityMap.value = {
-    "101010700": {
-      "name": "昌平",
-      "fxLink": "https://www.qweather.com/weather/changping-101010700.html"
-    }
-  }
-  queryCityList.value = [{
-    "name": "昌平",
-    "id": "101010700",
-    "lat": "40.21809",
-    "lon": "116.23591",
-    "adm2": "北京",
-    "adm1": "北京市",
-    "country": "中国",
-    "tz": "Asia/Shanghai",
-    "utcOffset": "+08:00",
-    "isDst": "0",
-    "type": "city",
-    "rank": "23",
-    "fxLink": "https://www.qweather.com/weather/changping-101010700.html"
-  }]
+  selectedCityIdList.value = INIT_DATA.selectedCityIdList
+  selectedCityMap.value = INIT_DATA.selectedCityMap
+  queryCityList.value = INIT_DATA.queryCityList
 }
 onMounted(() => initData())
 </script>
@@ -292,11 +273,17 @@ onMounted(() => initData())
 }
 
 .weather-content-scroll {
-  padding-bottom: 50px; /* 设置底部内边距，避免内容被全局导航栏挡住 */
+  padding-bottom: 50px;
+  /* 设置底部内边距，避免内容被全局导航栏挡住 */
 }
 
 .qi-font-size {
   font-size: 36px;
   text-align: center;
+}
+
+.highlight-class {
+  color: red;
+  font-weight: bold;
 }
 </style>
