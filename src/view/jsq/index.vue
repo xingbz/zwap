@@ -16,8 +16,8 @@
         <van-field v-model="formula" placeholder="在此处输入计算的公式" clearable @update:model-value="compute(false)"
           @keyup.enter="compute(true)" />
       </van-col>
-      <van-col span="1">结果</van-col>
-      <van-col span="3">
+      <van-col span="2">结果</van-col>
+      <van-col span="2">
         <van-button plain hairline type="warning" size="mini" class="content-middle" @click="formula = result">
           回填
         </van-button>

@@ -89,8 +89,8 @@
   </div>
 
   <van-popup v-model:show="showCityPopupFlag" position="left"
-    :style="{ width: '60%', height: '100%', padding: '64px' }">
-    <van-search v-model="param" @search="onQueryCity" show-action placeholder="请输入城市名称, 支持中文或拼音模糊搜索">
+    :style="{ width: '90%', height: '100%', padding: '64px' }">
+    <van-search v-model="param" @search="onQueryCity" show-action placeholder="请输入城市名称, 支持模糊搜索">
       <template #action>
         <div @click="onQueryCity">搜索</div>
       </template>
