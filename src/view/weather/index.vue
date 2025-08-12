@@ -57,16 +57,20 @@
     <div class="weather-content-scroll" v-if="!loading">
       <van-grid :column-num="selectedCityIdList.length + 1" v-for="dateItems in getWeatherDataByDate">
         <!-- 第一列, 取二维数组的第一个元素的日期(每个元素日期一样) -->
-        <van-grid-item>{{ dateItems[0].fxDate }}</van-grid-item>
+        <van-grid-item>{{ dateItems[0].fxDate + '(' + getDayOfWeekCN(dateItems[0].fxDate) + ')' }}</van-grid-item>
+
 
         <!-- 第2-N列, 每个城市的天气数据 -->
         <van-grid-item v-for="cityItem in dateItems">
           <div v-if="cityItem">
-            <van-row justify="center" align="center">
-              <van-col span="24" class="col-border">
+            <van-row>
+              <van-col span="12" class="col-border align-right">
                 <!-- 预报白天天气状况的图标代码 -->
                 <i :class="`qi-${cityItem.iconDay}`" class="qi-font-size" />&nbsp;
                 <!-- 预报白天天气状况文字描述，包括阴晴雨雪等天气状态的描述 -->
+
+              </van-col>
+              <van-col span="12" class="col-border align-left">
                 <van-highlight :keywords="highlightKeywords" highlight-class="highlight-class"
                   :source-string="cityItem.textDay + (cityItem.textNight && cityItem.textNight !== cityItem.textDay ? '转&nbsp;' + cityItem.textNight : '')" />
                 &nbsp;
@@ -74,7 +78,7 @@
               <!-- <van-col span="2">
                 <van-icon name="info-o" />
               </van-col> -->
-              <van-col span="24" class="col-border">
+              <van-col span="24" class="col-border align-center">
                 <!-- 预报当天最低温度 ~ 预报当天最高温度 -->
                 气温: {{ cityItem.tempMin }}°C~{{ cityItem.tempMax }}°C
               </van-col>
@@ -99,7 +103,8 @@
     <van-cell-group>
       <van-checkbox-group v-model="selectedCityIdList" shape="square" @change="onChangeSelectedCity">
         <van-space direction="vertical" fill>
-          <van-checkbox v-for="item in queryCityList" :name="item.id">{{ item.name + '(' + item.adm1 + "-" +  item.adm2 + ')' }}</van-checkbox>
+          <van-checkbox v-for="item in queryCityList" :name="item.id">{{ item.name + '(' + item.adm1 + "-" + item.adm2 +
+            ')' }}</van-checkbox>
         </van-space>
       </van-checkbox-group>
     </van-cell-group>
@@ -109,19 +114,26 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
+import { useStorage } from '@vueuse/core';
 import { showFailToast } from "vant"
 import { CONST, INIT_DATA, API } from "@/util/constant/weather_constants";
+import { getDayOfWeekCN } from "@/util/date_utils";
 
 const showCityPopupFlag = ref(false); // 是否展示城市弹窗
 const param = ref('') // 城市搜索参数
-const queryCityList = ref([]); // 城市搜索结果列表
-const selectedCityIdList = ref([]); // 选中城市ID列表
-const selectedCityMap = ref({}); // 选中城市ID和对象的映射关系
 const loading = ref(false); // 城市天气数据加载状态
 const weatherMap = ref({}); // 城市天气数据映射关系, key: 城市ID, value: 城市天气数据列表
 
 const highlightKeywords = ref(['雨', '雪', '雷', '雹'])
-const overlookKeywords = ref('')
+// const overlookKeywords = ref('')
+
+// 城市搜索结果列表
+const queryCityList = useStorage('zwap_weather_queryCityList', INIT_DATA.queryCityList)
+// 选中城市ID列表
+const selectedCityIdList = useStorage('zwap_weather_selectedCityIdList', INIT_DATA.selectedCityIdList)
+// 选中城市ID和对象的映射关系
+const selectedCityMap = useStorage('zwap_weather_selectedCityMap', INIT_DATA.selectedCityMap)
+
 
 /**
  * 计算属性，按日期组织天气数据
@@ -220,6 +232,9 @@ function onQueryWeather() {
   })
 }
 
+/**
+ * 跳转城市天气详情页
+ */
 function goToCityWeb(cityId) {
   const city = selectedCityMap.value[cityId];
   if (city && city.fxLink) {
@@ -235,12 +250,15 @@ function removeCity(cityId) {
   selectedCityMap.value[cityId] = null;
 }
 
-function initData() {
-  selectedCityIdList.value = INIT_DATA.selectedCityIdList
-  selectedCityMap.value = INIT_DATA.selectedCityMap
-  queryCityList.value = INIT_DATA.queryCityList
-}
-onMounted(() => initData())
+/**
+ * 初始化数据 -- 废弃
+ */
+// function initData() {
+//   selectedCityIdList.value = INIT_DATA.selectedCityIdList
+//   selectedCityMap.value = INIT_DATA.selectedCityMap
+//   queryCityList.value = INIT_DATA.queryCityList
+// }
+// onMounted(() => initData())
 </script>
 
 <style scoped>
@@ -285,5 +303,17 @@ onMounted(() => initData())
 .highlight-class {
   color: red;
   font-weight: bold;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.align-left {
+  text-align: left;
+}
+
+.align-center {
+  text-align: center;
 }
 </style>

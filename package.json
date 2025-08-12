@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@vant/touch-emulator": "^1.4.0",
+    "@vueuse/core": "^13.6.0",
     "axios": "^1.6.2",
     "copy-to-clipboard": "^3.3.3",
     "core-js": "^3.6.5",
