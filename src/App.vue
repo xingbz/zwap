@@ -6,6 +6,7 @@
       <van-tabbar-item icon="desktop-o" to="jsq"/>
       <van-tabbar-item icon="orders-o" to="caidan"/>
       <van-tabbar-item icon="bulb-o" to="weather"/>
+      <van-tabbar-item icon="photograph" to="camera"/>
 <!--      <van-tabbar-item icon="friends-o">标签</van-tabbar-item>-->
 <!--      <van-tabbar-item icon="setting-o">标签</van-tabbar-item>-->
     </van-tabbar>

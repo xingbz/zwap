@@ -39,6 +39,14 @@ const routes = [
         meta: {
             title: '天气',
         },
+    },
+    {
+        name: 'camera',
+        path: '/camera',
+        component: () => import('./view/camera'),
+        meta: {
+            title: '相机',
+        },
     }
 ];
 
