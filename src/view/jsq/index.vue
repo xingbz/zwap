@@ -5,8 +5,8 @@
     <van-nav-bar title="计算器" />
 
     <van-row :gutter="[10, 10]">
-      <van-col span="5">公式</van-col>
-      <van-col span="19">
+      <van-col span="6">公式</van-col>
+      <van-col span="18">
         <span @click="showHelperDialog()" style="cursor: pointer">帮助</span>
         <!-- <van-button plain hairline type="primary" size="mini" class="content-middle" @click="copyResult(result)">
           帮助
@@ -16,13 +16,13 @@
         <van-field v-model="formula" placeholder="在此处输入计算的公式" clearable @update:model-value="compute(false)"
           @keyup.enter="compute(true)" />
       </van-col>
-      <van-col span="2">结果</van-col>
+      <van-col span="3">结果</van-col>
       <van-col span="3">
         <van-button plain hairline type="warning" size="mini" class="content-middle" @click="formula = result">
           回填
         </van-button>
       </van-col>
-      <van-col span="19">
+      <van-col span="18">
         <van-button plain hairline type="primary" size="mini" class="content-middle" @click="copyResult(result)">
           复制
         </van-button>
@@ -30,8 +30,8 @@
       <van-col span="24" class="content-middle">
         <van-field v-model="result" readonly />
       </van-col>
-      <van-col span="5">历史</van-col>
-      <van-col span="19">
+      <van-col span="6">历史</van-col>
+      <van-col span="18">
         <van-button plain hairline type="danger" size="mini" class="content-middle" @click="clearHistory">清除
         </van-button>
       </van-col>
