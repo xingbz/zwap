@@ -1,17 +1,23 @@
 <template>
   <div id="app">
     <router-view />
-    <van-tabbar route :v-model="0">
+    <van-tabbar route :v-model="active" active-color="#ee0a24">
       <!-- <van-tabbar-item icon="video-o" to="dy"/> -->
       <van-tabbar-item icon="desktop-o" to="jsq"/>
       <van-tabbar-item icon="orders-o" to="caidan"/>
       <van-tabbar-item icon="bulb-o" to="weather"/>
-      <van-tabbar-item icon="photograph" to="camera"/>
+      <van-tabbar-item icon="photo-o" to="camera"/>
 <!--      <van-tabbar-item icon="friends-o">标签</van-tabbar-item>-->
 <!--      <van-tabbar-item icon="setting-o">标签</van-tabbar-item>-->
     </van-tabbar>
   </div>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+
+const active = ref(0)
+</script>
 
 <style>
 body {
