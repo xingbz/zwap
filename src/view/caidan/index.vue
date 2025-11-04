@@ -165,7 +165,6 @@ onMounted(() => {
 /* 响应式图片 */
 .responsive-image {
   max-width: 100%;
-  max-height: calc(100vh - 160px); /* 减去导航栏和边距 */
   object-fit: contain;
 }
 </style>

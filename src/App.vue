@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-view />
-    <van-tabbar route :v-model="active" active-color="#ee0a24">
+    <van-tabbar route :v-model="active" :placeholder="true" active-color="#ee0a24">
       <!-- <van-tabbar-item icon="video-o" to="dy"/> -->
       <van-tabbar-item icon="desktop-o" to="jsq"/>
       <van-tabbar-item icon="orders-o" to="caidan"/>
