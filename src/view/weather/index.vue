@@ -34,8 +34,9 @@
             <!-- 使用 title 插槽来自定义标题 -->
             <template #title>
               <div style="text-align: center; cursor: pointer; font-weight: bold;" title="点击跳转详情">
-                <van-highlight @click="goToCityWeb(selectedCityId)" :keywords="selectedCityMap[selectedCityId]?.name"
-                  :source-string="selectedCityMap[selectedCityId]?.name" />
+                <van-highlight @click="goToCityWeb(selectedCityId)"
+                  :keywords="selectedCityMap[selectedCityId] && selectedCityMap[selectedCityId].name"
+                  :source-string="selectedCityMap[selectedCityId] && selectedCityMap[selectedCityId].name" />
               </div>
             </template>
             <!-- 使用 right-icon 插槽来自定义右侧图标 -->

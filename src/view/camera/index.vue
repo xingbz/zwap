@@ -63,9 +63,9 @@ function takePhoto() {
     loading.value = false
     const data = res.data
     if (data && data.isSuccess) {
-      photo_url.value = data.devices?.XBZ
+      photo_url.value = data.devices && data.devices.XBZ
     } else {
-      return showFailToast(data?.errorMessage)
+      return showFailToast(data && data.errorMessage)
     }
   })
 

@@ -70,7 +70,7 @@ function getDateWithOffset(offsetDays = 0) {
  */
 function getImgUrl(offsetDays = 0) {
   // 拼接基础 URL、日期的 MD5 哈希值和文件扩展名，生成完整的图片 URL
-  const imgUrl = 'https://mob-it-team.s3.ap-southeast-1.amazonaws.com/ac2458867d05eaad/ae8b77b60f314a33/menu/'
+  const imgUrl = 'https://mob-it-team-v2.s3.ap-southeast-1.amazonaws.com/ac2458867d05eaad/ae8b77b60f314a33/menu/'
     + new MD5().update(getDateWithOffset(offsetDays)).digest('hex')
     + '.jpg'
   // console.log(imgUrl)

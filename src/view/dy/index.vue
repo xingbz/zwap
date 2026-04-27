@@ -48,14 +48,14 @@
       </van-cell>
       <van-cell title="音乐地址">
         <template #value>
-          <van-button type="primary" class="content-middle" size="mini" v-if="result.music?.url"
-                      @click="openUrl(result.music?.url)">下载
+          <van-button type="primary" class="content-middle" size="mini" v-if="result.music && result.music.url"
+                      @click="openUrl(result.music && result.music.url)">下载
           </van-button>
         </template>
       </van-cell>
       <van-cell>
         <div class="van-multi-ellipsis--l2">
-          {{ result.music?.url }}
+          {{ result.music && result.music.url }}
         </div>
       </van-cell>
       <van-cell title="作者" :label="result.author"/>
